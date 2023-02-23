@@ -1,0 +1,20 @@
+{
+	"name": "grapqlnodeblog",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "nodemon  server.js"
+	},
+	"keywords": [],
+	"author": "Mateo Díaz <mateodiaz401@gmail.com>",
+	"license": "ISC",
+	"dependencies": {
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2",
+		"express-graphql": "^0.12.0",
+		"graphql": "^16.6.0",
+		"jsonwebtoken": "^9.0.0",
+		"mongoose": "^6.10.0"
+	}
+}
