@@ -3,6 +3,11 @@ const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
 const schema = require("./graphql/schema");
 
+const { connectDB } = require("./db")
+
+
+connectDB();
+
 const app = express();
 
 app.listen(3000);
