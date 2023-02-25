@@ -1,20 +1,23 @@
 const { Schema, model } = require('mongoose');
 
-const postSchema = new Schema({
-    authorId: {
-        type: String,
-        required: true
+const postSchema = new Schema(
+    {
+        authorId: {
+            type: String,
+            required: true,
+        },
+        title: {
+            type: String,
+            required: true,
+        },
+        body: {
+            type: String,
+            required: true,
+        },
     },
-    title: {
-        type: String,
-        required: true
-    },
-    body: {
+    {
+        timestamps: true,
+        versionKey: false
+    });
 
-    },
-}, {
-    timestamps: true,
-    versionKey: false
-});
-
-module.children = model("Post", postSchema);
+module.exports = model("Post", postSchema);

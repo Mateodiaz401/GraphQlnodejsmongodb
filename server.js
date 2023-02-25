@@ -2,6 +2,7 @@ const express = require("express");
 
 const { graphqlHTTP } = require("express-graphql");
 const schema = require("./graphql/schema");
+const { authenticate } = require("./middleware/auth")
 
 const { connectDB } = require("./db")
 
@@ -9,6 +10,8 @@ const { connectDB } = require("./db")
 connectDB();
 
 const app = express();
+
+app.use(authenticate);
 
 app.listen(3000);
 //TODO: Method  express 
