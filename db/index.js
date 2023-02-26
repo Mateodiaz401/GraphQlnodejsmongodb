@@ -1,10 +1,22 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 
-const connectDB = async () => {
+
+const connectDB = () => {
+    const DB_URL = process.env.MONGODB_URL
     mongoose.set('strictQuery', false);
-    await mongoose.connect('mongodb://usuariosprueba:sametsis2023@localhost:27018/blogs?');
-    console.log('MongoDB Connected');
+    mongoose.connect(DB_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }, (err, res) => {
+        if (!err) {
+            console.log('****** MONGODB CONNECTED ******');
+        }
+        else {
+            console.log('****** MONGODB NOT CONNECTED ******');
+        }
+    });
 }
 
 

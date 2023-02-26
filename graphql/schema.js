@@ -1,8 +1,8 @@
 //TODO: Aquí ban las consultas que retorna datos 
 
 const { GraphQLSchema, GraphQLObjectType } = require('graphql');
-const { users, user, posts, post } = require('./queries');
-const { register, login, createPost, updatePost, deletePost } = require('./mutations');
+const { users, user, posts, post, comments, comment } = require('./queries');
+const { register, login, createPost, updatePost, deletePost, addComment, updateComment, deleteComment } = require('./mutations');
 
 const QueryType = new GraphQLObjectType({
     name: 'ListUser',
@@ -11,7 +11,9 @@ const QueryType = new GraphQLObjectType({
         users,
         user,
         posts,
-        post
+        post,
+        comments,
+        comment,
     }
 });
 
@@ -23,7 +25,10 @@ const MutationType = new GraphQLObjectType({
         login,
         createPost,
         updatePost,
-        deletePost
+        deletePost,
+        addComment,
+        updateComment,
+        deleteComment
     }
 });
 

@@ -1,7 +1,7 @@
 const { GraphQLString, GraphQLID } = require("graphql");
-const { User, Post } = require("../models");
+const { User, Post, Comment } = require("../models");
 const { createJWToken } = require("../util/auth");
-const { PostType } = require("../graphql/types")
+const { PostType, CommentType } = require("./types")
 
 const register = {
     type: GraphQLString,
@@ -26,7 +26,7 @@ const register = {
         });
         return token
     }
-}
+};
 const login = {
     type: GraphQLString,
     description: "Login a user and returns  a token",
@@ -46,7 +46,7 @@ const login = {
         })
         return token
     }
-}
+};
 
 const createPost = {
     type: PostType,
@@ -66,7 +66,7 @@ const createPost = {
 
         return post
     }
-}
+};
 
 const updatePost = {
     type: PostType,
@@ -93,7 +93,7 @@ const updatePost = {
         return updatedPost;
     }
 
-}
+};
 
 const deletePost = {
     type: GraphQLString,
@@ -110,6 +110,62 @@ const deletePost = {
         if (!postDelete) throw new Error("Post not found")
         return "Post Deleted";
     }
+};
+
+const addComment = {
+    type: CommentType,
+    description: "Add a comment to a post",
+    args: {
+        comment: { type: GraphQLString },
+        postId: { type: GraphQLID },
+    },
+    async resolve(_, { comment, postId }, { verifiedUser }) {
+        const newComment = new Comment({
+            comment,
+            postId,
+            userId: verifiedUser._id,
+        });
+        return newComment.save();
+    }
+}
+const updateComment = {
+    type: CommentType,
+    description: "Update a comment",
+    args: {
+        id: { type: GraphQLID },
+        comment: { type: GraphQLString },
+    },
+    async resolve(_, { id, comment }, { verifiedUser }) {
+        if (!verifiedUser) throw new Error("Unauthorized");
+        const commentUpdated = await Comment.findOneAndUpdate(
+            {
+                _id: id,
+                userId: verifiedUser._id,
+            },
+            {
+                comment
+            }
+        );
+        if (!commentUpdated) throw new Error("Comment not found");
+        return commentUpdated;
+    },
+}
+
+const deleteComment = {
+    type: GraphQLString,
+    description: "Delete a comment",
+    args: {
+        id: { type: GraphQLID },
+    },
+    async resolve(_, { id }, { verifiedUser }) {
+        if (!verifiedUser) throw new Error("Unauthorized");
+        const commentDeleted = await Comment.findOneAndDelete({
+            _id: id,
+            userId: verifiedUser._id,
+        });
+        if (!commentDeleted) throw new Error("Comment not found");
+        return "Comment Deleted"
+    }
 }
 
 
@@ -118,5 +174,9 @@ module.exports = {
     login,
     createPost,
     updatePost,
-    deletePost
+    deletePost,
+    addComment,
+    updateComment,
+    deleteComment,
+
 }
